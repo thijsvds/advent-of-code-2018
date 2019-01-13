@@ -1,68 +1,69 @@
 data = ''
-with open('input_day6.txt', 'r') as myfile:
+with open('testinput_day6.txt', 'r') as myfile:
   data = myfile.read()
 
 data_split = data.split('\n')
 
-def data_to_coord(line):
-  coord_x = int(line.split(',')[0])
-  coord_y = int(line.split(',')[1].replace(' ', ''))
-  return [coord_x, coord_y]
+# Convert text file into coordinates
+def read_coordinates(data):
+  list_of_coordinates = []
+  for line in data:
+    x = int(line.split(',')[0])
+    y = int(line.split(',')[1].replace(' ', ''))
+    list_of_coordinates.append([x, y])
+  return list_of_coordinates
 
-def data_to_coords(data_file):
-  list_of_coords = []
-  for data_line in data_file:
-    list_of_coords.append(data_to_coord(data_line))
-  return list_of_coords
-
+# Read the highest values from a list of coordinates
 def max_xy(list_of_coords):
   max_x = max([x[0] for x in list_of_coords])
   max_y = max([x[1] for x in list_of_coords])
   return [max_x, max_y]
 
 def create_matrix(max_xy):
-  return [['' for y in range(0, max_xy[1]+1)] for x in range(0, max_xy[0]+1)]
+  max_x = max_xy[0]
+  max_y = max_xy[1]
+  return [['' for y in range(0, max_x + 1)] for x in range(0, max_y + 1)]
 
-def plot_coords(matrix, coord, name):
+def plot_coordinates(matrix, coord, name):
   matrix[coord[0]][coord[1]] = name
   return matrix
 
-def coords_by_taxi(coord, diff):
-  coords_reachable = []
-  x = coord[0]
-  y = coord[1]
-  for i in range(0, diff):
-    coords_reachable.append([x + i, y + diff -i])
-    coords_reachable.append([x + diff -i, y + i])
-    coords_reachable.append([x - i, y - diff -i])
-    coords_reachable.append([x - diff -i, y - i])
-  return coords_reachable
+def circle_around(coordinate, distance):
+  min_x = coordinate[0] - distance
+  max_x = coordinate[0] + distance
+  min_y = coordinate[1] - distance
+  max_y = coordinate[1] + distance
 
-def get_coord(coord, matrix):
-  x = coord[0]
-  y = coord[1]
-  return matrix[x][y]
 
-def find_closest_place(matrix, coord):
-  x = coord[0]
-  y = coord[1]
-  diff = 1
-  closest_place = None
-  while closest_place == None:
-    for coordi in coords_by_taxi(coord, diff):
-      current_loc = get_coord(coordi, matrix)
-      if current_loc != '':
-        closest_place = current_loc
-    diff += 1
-  return 'c' + str(closest_place)
+def find_closest_location(coordinate):
+  x = coordinate[0]
+  y = coordinate[y]
+  count = 1
+  nothing_found = True
+  while nothing_found:
 
-list_c = data_to_coords(data_split)
-matrix = create_matrix(max_xy(list_c))
+  print(coordinates, get_content(coordinates))
+
+def get_content(coordinates):
+  return matrix[coordinate[0]][coordinate[1]]
+
+list_of_coordinates = read_coordinates(data_split)
+
+matrix = create_matrix(max_xy(list_of_coordinates))
+print(len(matrix))
+print(len(matrix[0]))
 
 count = 0
-for coord in list_c:
-  matrix = plot_coords(matrix, coord, count)
+for coord in list_of_coordinates:
+  matrix = plot_coordinates(matrix, coord, count)
   count += 1
 
-print(find_closest_place(matrix, [800,0]))
+rowcount = 0
+for row in matrix:
+  cellcount = 0
+  for cell in row:
+    find_closest_location([rowcount, cellcount])
+    cellcount += 1
+  rowcount += 1
+
 
